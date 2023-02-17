@@ -1236,6 +1236,15 @@ void AbstractLogView::markSelected()
     }
 }
 
+void AbstractLogView::addSelectedToTimeline()
+{
+    printf("AbstractLogView::addSelectedToTimeline\n");
+    auto lines = selection_.getLines();
+    if ( !lines.empty() ) {
+        Q_EMIT addToTimeline( lines );
+    }
+}
+
 void AbstractLogView::saveToFile()
 {
     auto filename = QFileDialog::getSaveFileName( this, "Save content" );
@@ -1755,6 +1764,9 @@ void AbstractLogView::createMenu()
     markAction_ = new QAction( tr( "&Mark" ), this );
     connect( markAction_, &QAction::triggered, this, [ this ]( auto ) { this->markSelected(); } );
 
+    addToTimeLineAction_ = new QAction( tr( "Add to timeline" ), this );
+    connect( addToTimeLineAction_, &QAction::triggered, this, [ this ]( auto ) { this->addSelectedToTimeline(); } );
+
     saveToFileAction_ = new QAction( tr( "Save to file" ), this );
     connect( saveToFileAction_, &QAction::triggered, this,
              [ this ]( auto ) { this->saveToFile(); } );
@@ -1827,6 +1839,8 @@ void AbstractLogView::createMenu()
 
     popupMenu_->addSeparator();
     popupMenu_->addAction( markAction_ );
+    popupMenu_->addSeparator();
+    popupMenu_->addAction( addToTimeLineAction_ );
     popupMenu_->addSeparator();
     popupMenu_->addAction( copyAction_ );
     popupMenu_->addAction( sendToScratchpadAction_ );

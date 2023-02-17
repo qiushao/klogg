@@ -277,6 +277,9 @@ class AbstractLogView : public QAbstractScrollArea, public SearchableWidgetInter
     // Sent when the view ask for a line to be marked
     // (click in the left margin).
     void markLines( const std::vector<LineNumber>& lines );
+
+    void addToTimeline( const std::vector<LineNumber>& lines );
+
     // Sent up when the user wants to add the selection to the search
     void addToSearch( const QString& selection );
     // Sent up when the user wants to replace the search with the selection
@@ -355,6 +358,7 @@ class AbstractLogView : public QAbstractScrollArea, public SearchableWidgetInter
     void findPreviousSelected();
     void copy();
     void markSelected();
+    void addSelectedToTimeline();
     void saveToFile();
     void setSearchStart();
     void setSearchEnd();
@@ -445,6 +449,7 @@ class AbstractLogView : public QAbstractScrollArea, public SearchableWidgetInter
     QMenu* popupMenu_;
     QAction* copyAction_;
     QAction* markAction_;
+    QAction* addToTimeLineAction_;
     QAction* sendToScratchpadAction_;
     QAction* replaceInScratchpadAction_;
     QAction* saveToFileAction_;
