@@ -57,13 +57,13 @@ class FilteredView : public AbstractLogView
     // What is visible in the view.
     using Visibility = LogFilteredData::Visibility;
     void setVisibility( Visibility visi );
+    LineNumber lineIndex( LineNumber lineNumber ) const override;
 
   protected:
     LogFilteredData::LineType lineType( LineNumber lineNumber ) const override;
 
     // Number of the filtered line relative to the unfiltered source
     LineNumber displayLineNumber(LineNumber lineNumber ) const override;
-    LineNumber lineIndex( LineNumber lineNumber ) const override;
     LineNumber maxDisplayLineNumber() const override;
 
     void doRegisterShortcuts() override;

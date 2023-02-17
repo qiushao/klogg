@@ -574,7 +574,7 @@ void CrawlerWidget::markLinesFromFiltered( const std::vector<LineNumber>& lines 
 
 void CrawlerWidget::addToTimelineFromMain( const std::vector<LineNumber>& lines )
 {
-    timelineWidget_->addToTimeline(lines);
+    timelineWidget_->addLinesToTimeline( lines );
 }
 
 void CrawlerWidget::addToTimelineFromFiltered( const std::vector<LineNumber>& lines )
@@ -1111,7 +1111,7 @@ void CrawlerWidget::setup()
     leftSplitter->addWidget( logMainView_ );
     leftSplitter->addWidget( bottomWindow );
 
-    timelineWidget_ = new TimelineWidget(this);
+    timelineWidget_ = new TimelineWidget(logMainView_, filteredView_, this);
     addWidget(leftSplitter);
     addWidget(timelineWidget_);
 

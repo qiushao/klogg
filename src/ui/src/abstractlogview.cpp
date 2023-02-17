@@ -1495,6 +1495,11 @@ void AbstractLogView::selectAll()
     forceRefresh();
 }
 
+QString AbstractLogView::getLineString(LineNumber line)
+{
+    return logData_->getLineString(line);
+}
+
 void AbstractLogView::trySelectLine( LineNumber lineToSelect )
 {
     if ( lineToSelect >= logData_->getNbLine() ) {

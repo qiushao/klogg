@@ -208,6 +208,7 @@ class AbstractLogView : public QAbstractScrollArea, public SearchableWidgetInter
     bool isPartialSelection() const;
     // Instructs the widget to select the whole text.
     void selectAll();
+    QString getLineString(LineNumber line);
 
     bool isFollowEnabled() const
     {
@@ -222,6 +223,7 @@ class AbstractLogView : public QAbstractScrollArea, public SearchableWidgetInter
     void setQuickHighlighters( const std::vector<QuickHighlighters>& wordHighlighters );
 
     void registerShortcuts();
+    virtual LineNumber lineIndex( LineNumber lineNumber ) const;
 
   protected:
     void mousePressEvent( QMouseEvent* mouseEvent ) override;
@@ -243,7 +245,6 @@ class AbstractLogView : public QAbstractScrollArea, public SearchableWidgetInter
 
     // Line number to display for line at the given index
     virtual LineNumber displayLineNumber( LineNumber lineNumber ) const;
-    virtual LineNumber lineIndex( LineNumber lineNumber ) const;
     virtual LineNumber maxDisplayLineNumber() const;
 
     // Get the overview associated with this view, or NULL if there is none
