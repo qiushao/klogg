@@ -1238,7 +1238,6 @@ void AbstractLogView::markSelected()
 
 void AbstractLogView::addSelectedToTimeline()
 {
-    printf("AbstractLogView::addSelectedToTimeline\n");
     auto lines = selection_.getLines();
     if ( !lines.empty() ) {
         Q_EMIT addToTimeline( lines );

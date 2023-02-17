@@ -53,12 +53,13 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
+#include "TimelineWidget.h"
 #include "colorlabelsmanager.h"
+#include "filteredview.h"
+#include "iconloader.h"
 #include "loadingstatus.h"
 #include "logdata.h"
 #include "logfiltereddata.h"
-#include "filteredview.h"
-#include "iconloader.h"
 #include "logmainview.h"
 #include "overview.h"
 #include "predefinedfilterscombobox.h"
@@ -196,6 +197,9 @@ class CrawlerWidget : public QSplitter,
     void markLinesFromMain( const std::vector<LineNumber>& lines );
     // Mark a line that has been clicked on the filtered (bottom) view.
     void markLinesFromFiltered( const std::vector<LineNumber>& lines );
+
+    void addToTimelineFromMain( const std::vector<LineNumber>& lines );
+    void addToTimelineFromFiltered( const std::vector<LineNumber>& lines );
 
     void loadingFinishedHandler( LoadingStatus status );
     // Manages the info lines to inform the user the file has changed.
@@ -346,6 +350,7 @@ class CrawlerWidget : public QSplitter,
 
     LogMainView* logMainView_;
     FilteredView* filteredView_;
+    TimelineWidget* timelineWidget_;
 
     OverviewWidget* overviewWidget_;
 

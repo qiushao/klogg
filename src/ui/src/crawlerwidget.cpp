@@ -572,6 +572,27 @@ void CrawlerWidget::markLinesFromFiltered( const std::vector<LineNumber>& lines 
     markLinesFromMain( linesInMain );
 }
 
+void CrawlerWidget::addToTimelineFromMain( const std::vector<LineNumber>& lines )
+{
+    timelineWidget_->addToTimeline(lines);
+}
+
+void CrawlerWidget::addToTimelineFromFiltered( const std::vector<LineNumber>& lines )
+{
+    std::vector<LineNumber> linesInMain( lines.size() );
+    std::transform( lines.cbegin(), lines.cend(), linesInMain.begin(),
+                    [ this ]( const auto& filteredLine ) {
+                        if ( filteredLine < logData_->getNbLine() ) {
+                            return logFilteredData_->getMatchingLineNumber( filteredLine );
+                        }
+                        else {
+                            return maxValue<LineNumber>();
+                        }
+                    } );
+
+    addToTimelineFromMain( linesInMain );
+}
+
 void CrawlerWidget::applyConfiguration()
 {
     const auto& config = Configuration::get();
@@ -1090,9 +1111,9 @@ void CrawlerWidget::setup()
     leftSplitter->addWidget( logMainView_ );
     leftSplitter->addWidget( bottomWindow );
 
-    QListView *listview = new QListView();
+    timelineWidget_ = new TimelineWidget(this);
     addWidget(leftSplitter);
-    addWidget(listview);
+    addWidget(timelineWidget_);
 
     // Default splitter position (usually overridden by the config file)
     setSizes( {80, 20} );
@@ -1147,6 +1168,9 @@ void CrawlerWidget::setup()
 
     connect( logMainView_, &LogMainView::markLines, this, &CrawlerWidget::markLinesFromMain );
     connect( filteredView_, &FilteredView::markLines, this, &CrawlerWidget::markLinesFromFiltered );
+
+    connect( logMainView_, &LogMainView::addToTimeline, this, &CrawlerWidget::addToTimelineFromMain );
+    connect( filteredView_, &FilteredView::addToTimeline, this, &CrawlerWidget::addToTimelineFromFiltered );
 
     connect( logMainView_, QOverload<const QString&>::of( &LogMainView::addToSearch ), this,
              &CrawlerWidget::addToSearch );
