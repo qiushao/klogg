@@ -910,7 +910,7 @@ void CrawlerWidget::clearSearchLimits()
 void CrawlerWidget::setup()
 {
     LOG_INFO << "Setup crawler widget";
-    setOrientation( Qt::Vertical );
+    setOrientation( Qt::Horizontal );
 
     assert( logData_ );
     assert( logFilteredData_ );
@@ -1085,8 +1085,17 @@ void CrawlerWidget::setup()
     bottomMainLayout->setContentsMargins( 2, 2, 2, 2 );
     bottomWindow->setLayout( bottomMainLayout );
 
-    addWidget( logMainView_ );
-    addWidget( bottomWindow );
+    QSplitter *leftSplitter = new QSplitter();
+    leftSplitter->setOrientation( Qt::Vertical );
+    leftSplitter->addWidget( logMainView_ );
+    leftSplitter->addWidget( bottomWindow );
+
+    QListView *listview = new QListView();
+    addWidget(leftSplitter);
+    addWidget(listview);
+
+    // Default splitter position (usually overridden by the config file)
+    setSizes( {80, 20} );
 
     // Default search checkboxes
     auto& config = Configuration::get();
@@ -1099,9 +1108,6 @@ void CrawlerWidget::setup()
     useRegexpChangeHandler( useRegexpButton_->isChecked() );
     matchCaseChangedHandler( matchCaseButton_->isChecked() );
     booleanCombiningChangedHandler( booleanButton_->isChecked() );
-
-    // Default splitter position (usually overridden by the config file)
-    setSizes( config.splitterSizes() );
 
     registerShortcuts();
     loadIcons();
