@@ -4,12 +4,16 @@
 
 #include "TimelineWidget.h"
 #include "TimelineNode.h"
+#include <QMessageBox>
 TimelineWidget::TimelineWidget( AbstractLogView* mainLogView, AbstractLogView* filteredLogView, QWidget* parent )
     : QListWidget( parent )
 {
     mainLogView_ = mainLogView;
     filteredLogView_ = filteredLogView;
     setSpacing(10);
+    setProperty("contextMenuPolicy", Qt::CustomContextMenu);
+    initPopMenu();
+    connect(this, &QWidget::customContextMenuRequested, this, &TimelineWidget::onCustomContextMenuRequested);
     connect(this, &QListWidget::itemDoubleClicked, this, &TimelineWidget::onItemDoubleClicked);
 }
 
@@ -46,7 +50,50 @@ void TimelineWidget::addToTimeline( uint64_t lineNumber, QString detail, QString
 void TimelineWidget::onItemDoubleClicked( QListWidgetItem* item ) {
     TimelineNode* node = dynamic_cast<TimelineNode*>( itemWidget( item ) );
     LineNumber line(node->getLineNumber());
+    auto filterLine = filteredLogView_->lineIndex(line);
+    filteredLogView_->trySelectLine(filterLine);
     mainLogView_->trySelectLine(line);
-    filteredLogView_->trySelectLine(filteredLogView_->lineIndex(line));
 }
 
+void TimelineWidget::onCustomContextMenuRequested( const QPoint& pos ) {
+    Q_UNUSED(pos);
+    popMenu_->exec(QCursor::pos());
+}
+
+void TimelineWidget::initPopMenu() {
+    popMenu_ = new QMenu(this);
+    deleteAction_ = new QAction(tr("Delete"), this);
+    cleanAction_ = new QAction(tr("ClearAll"), this);
+    popMenu_->addAction(deleteAction_);
+    popMenu_->addAction(cleanAction_);
+    connect(deleteAction_, &QAction::triggered, this, &TimelineWidget::onDelete);
+    connect(cleanAction_, &QAction::triggered, this, &TimelineWidget::onClearAll);
+}
+
+void TimelineWidget::onDelete() {
+    QList<QListWidgetItem*> items = selectedItems();
+    if (items.count() > 0)
+    {
+        if (QMessageBox::Yes == QMessageBox::question(this, QStringLiteral("Remove Item"), QStringLiteral("Remove %1 item")
+                                                                                                   .arg(QString::number(items.count())), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+        {
+            for (auto item : items){
+                removeItemWidget( item );
+                items.removeOne( item );
+                delete item;
+            }
+        }
+    }
+}
+
+void TimelineWidget::onClearAll() {
+    if (QMessageBox::Yes == QMessageBox::question(this, QStringLiteral("Remove Item"), QStringLiteral("Remove all item"),
+                                                    QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes))
+    {
+        auto listSize = this->count();
+        for ( int i = 0; i < listSize; ++i ) {
+            QListWidgetItem* item = this->takeItem(0);
+            delete item;
+        }
+    }
+}

@@ -8,6 +8,8 @@
 #include "abstractlogview.h"
 #include "linetypes.h"
 #include <QListWidget>
+#include <QMenu>
+#include <QAction>
 
 class TimelineWidget : public QListWidget {
     Q_OBJECT
@@ -16,12 +18,22 @@ class TimelineWidget : public QListWidget {
     void addLinesToTimeline( const std::vector<LineNumber>& lines );
     void addToTimeline(uint64_t lineNumber, QString line, QString comment);
 
+  private:
+    void initPopMenu();
+
   private Q_SLOTS:
     void onItemDoubleClicked(QListWidgetItem *item);
+    void onCustomContextMenuRequested(const QPoint &pos);
+    void onDelete();
+    void onClearAll();
 
   private:
     AbstractLogView* mainLogView_;
     AbstractLogView* filteredLogView_;
+
+    QMenu* popMenu_;
+    QAction* deleteAction_;
+    QAction* cleanAction_;
 };
 
 #endif // KLOGG_TIMELINEWIDGET_H
