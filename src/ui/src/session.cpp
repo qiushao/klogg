@@ -176,6 +176,7 @@ void WindowSession::save(
         session_files.emplace_back( file->fileName, top_line, view_context->toString() );
     }
 
+    // TODO save timeline node
     auto& session = SessionInfo::getSynced();
     session.setOpenFiles( windowId_, session_files );
     session.setGeometry( windowId_, geometry );

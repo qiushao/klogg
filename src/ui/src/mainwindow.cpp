@@ -315,6 +315,18 @@ void MainWindow::createActions()
         QFile::copy(sessionConfPath, fileName);
     });
 
+    loadSessionAction = new QAction(tr("Load session"), this);
+    connect(loadSessionAction, &QAction::triggered, this, [this](auto ) {
+        QString sessionConfPath = PersistentInfo::getSessionSettingsFilePath();
+        QString fileName = QFileDialog::getOpenFileName(
+            this,
+            tr("Select session config file"),
+            QDir::homePath(),
+            tr("Session file(*.conf)"));
+        printf("try to load session file %s", fileName.toStdString().c_str());
+        QFile::copy(fileName, sessionConfPath);
+    });
+
     recentFilesGroup = new QActionGroup( this );
     connect( recentFilesGroup, &QActionGroup::triggered, this, &MainWindow::openFileFromRecent );
     for ( auto i = 0u; i < recentFileActions.size(); ++i ) {
@@ -560,6 +572,7 @@ void MainWindow::createMenus()
     fileMenu->addAction( closeAction );
     fileMenu->addAction( closeAllAction );
     fileMenu->addAction(saveSessionAction);
+    fileMenu->addAction(loadSessionAction);
     fileMenu->addSeparator();
 
     fileMenu->addAction( optionsAction );

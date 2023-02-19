@@ -241,6 +241,7 @@ class MainWindow : public QMainWindow {
     QAction* closeAction;
     QAction* closeAllAction;
     QAction* saveSessionAction;
+    QAction* loadSessionAction;
     QAction* exitAction;
     QAction* copyAction;
     QAction* selectAllAction;
