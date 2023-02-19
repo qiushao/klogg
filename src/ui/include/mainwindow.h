@@ -240,6 +240,7 @@ class MainWindow : public QMainWindow {
     QAction* openAction;
     QAction* closeAction;
     QAction* closeAllAction;
+    QAction* saveSessionAction;
     QAction* exitAction;
     QAction* copyAction;
     QAction* selectAllAction;

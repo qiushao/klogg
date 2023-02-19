@@ -307,6 +307,14 @@ void MainWindow::createActions()
     connect( closeAllAction, &QAction::triggered, this,
              [ this ]( auto ) { this->closeAll( ActionInitiator::User ); } );
 
+    saveSessionAction = new QAction(tr("Save session to file"), this);
+    connect(saveSessionAction, &QAction::triggered, this, [this](auto){
+        QString sessionConfPath = PersistentInfo::getSessionSettingsFilePath();
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Save session to file"), "./klogg_session.conf", tr("Session file(*.conf)"));
+        writeSettings();
+        QFile::copy(sessionConfPath, fileName);
+    });
+
     recentFilesGroup = new QActionGroup( this );
     connect( recentFilesGroup, &QActionGroup::triggered, this, &MainWindow::openFileFromRecent );
     for ( auto i = 0u; i < recentFileActions.size(); ++i ) {
@@ -551,6 +559,7 @@ void MainWindow::createMenus()
     fileMenu->addAction( openUrlAction );
     fileMenu->addAction( closeAction );
     fileMenu->addAction( closeAllAction );
+    fileMenu->addAction(saveSessionAction);
     fileMenu->addSeparator();
 
     fileMenu->addAction( optionsAction );

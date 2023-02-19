@@ -55,6 +55,7 @@ class PersistentInfo {
   public:
     static QSettings& getSettings( app_settings );
     static QSettings& getSettings( session_settings );
+    static QString getSessionSettingsFilePath();
 
   private:
     static const bool ForcePortable;

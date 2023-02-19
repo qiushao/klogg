@@ -243,3 +243,8 @@ QSettings& PersistentInfo::getSettings( session_settings )
 {
     return *getInstance().sessionSettings_;
 }
+
+QString PersistentInfo::getSessionSettingsFilePath()
+{
+    return getInstance().sessionSettings_->fileName();
+}
