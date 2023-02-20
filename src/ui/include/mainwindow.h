@@ -210,6 +210,7 @@ class MainWindow : public QMainWindow {
     void removeFromRecent( const QString& pathToRemove );
     void tryOpenClipboard( int tryTimes );
     void updateShortcuts();
+    void rebootToLoadSession();
 
     WindowSession session_;
     QString loadingFileName;

@@ -323,8 +323,11 @@ void MainWindow::createActions()
             tr("Select session config file"),
             QDir::homePath(),
             tr("Session file(*.conf)"));
-        printf("try to load session file %s", fileName.toStdString().c_str());
+        //printf("try to load session file %s\n", fileName.toStdString().c_str());
+        //printf("sessionConfPath = %s\n", sessionConfPath.toStdString().c_str());
+        QFile::remove(sessionConfPath);
         QFile::copy(fileName, sessionConfPath);
+        rebootToLoadSession();
     });
 
     recentFilesGroup = new QActionGroup( this );
@@ -2041,4 +2044,14 @@ void MainWindow::generateDump()
     if ( userAction == QMessageBox::Yes ) {
         throw std::logic_error( "test dump" );
     }
+}
+
+void MainWindow::rebootToLoadSession()
+{
+    QString program = QApplication::applicationFilePath();
+    QStringList arguments;
+    arguments << QString("-s"); // load session file
+    QString workingDirectory = QDir::currentPath();
+    QProcess::startDetached(program, arguments, workingDirectory);
+    QApplication::exit();
 }
