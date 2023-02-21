@@ -308,27 +308,10 @@ void MainWindow::createActions()
              [ this ]( auto ) { this->closeAll( ActionInitiator::User ); } );
 
     saveSessionAction = new QAction(tr("Save session to file"), this);
-    connect(saveSessionAction, &QAction::triggered, this, [this](auto){
-        QString sessionConfPath = PersistentInfo::getSessionSettingsFilePath();
-        QString fileName = QFileDialog::getSaveFileName(this, tr("Save session to file"), "./klogg_session.conf", tr("Session file(*.conf)"));
-        writeSettings();
-        QFile::copy(sessionConfPath, fileName);
-    });
+    connect(saveSessionAction, &QAction::triggered, this, &MainWindow::saveSession);
 
     loadSessionAction = new QAction(tr("Load session"), this);
-    connect(loadSessionAction, &QAction::triggered, this, [this](auto ) {
-        QString sessionConfPath = PersistentInfo::getSessionSettingsFilePath();
-        QString fileName = QFileDialog::getOpenFileName(
-            this,
-            tr("Select session config file"),
-            QDir::homePath(),
-            tr("Session file(*.conf)"));
-        //printf("try to load session file %s\n", fileName.toStdString().c_str());
-        //printf("sessionConfPath = %s\n", sessionConfPath.toStdString().c_str());
-        QFile::remove(sessionConfPath);
-        QFile::copy(fileName, sessionConfPath);
-        rebootToLoadSession();
-    });
+    connect(loadSessionAction, &QAction::triggered, this, &MainWindow::loadSession);
 
     recentFilesGroup = new QActionGroup( this );
     connect( recentFilesGroup, &QActionGroup::triggered, this, &MainWindow::openFileFromRecent );
@@ -1974,7 +1957,7 @@ void MainWindow::writeSettings()
         widget_list;
     for ( int i = 0; i < mainTabWidget_.count(); ++i ) {
         auto view = qobject_cast<const CrawlerWidget*>( mainTabWidget_.widget( i ) );
-        widget_list.emplace_back( view, 0UL, view->context() );
+        widget_list.emplace_back( view, view->getCurrentLine(), view->context() );
     }
     session_.save( widget_list, saveGeometry() );
 }
@@ -2054,4 +2037,31 @@ void MainWindow::rebootToLoadSession()
     QString workingDirectory = QDir::currentPath();
     QProcess::startDetached(program, arguments, workingDirectory);
     QApplication::exit();
+}
+
+void MainWindow::saveSession() {
+    writeSettings();
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save session to file"),
+                                                     "./klogg_session.conf", tr("Session file(*.conf)"));
+    if (fileName.isEmpty()) {
+        return ;
+    }
+    printf("try save session to file : %s\n", fileName.toStdString().c_str());
+    auto sessionInfo = SessionInfo::get();
+    QSettings settings(fileName, QSettings::IniFormat);
+    sessionInfo.saveToStorage(settings);
+}
+
+void MainWindow::loadSession() {
+    QString sessionConfPath = PersistentInfo::getSessionSettingsFilePath();
+    QString fileName = QFileDialog::getOpenFileName(
+        this,
+        tr("Select session config file"),
+        QDir::homePath(),
+        tr("Session file(*.conf)"));
+    //printf("try to load session file %s\n", fileName.toStdString().c_str());
+    //printf("sessionConfPath = %s\n", sessionConfPath.toStdString().c_str());
+    QFile::remove(sessionConfPath);
+    QFile::copy(fileName, sessionConfPath);
+    rebootToLoadSession();
 }

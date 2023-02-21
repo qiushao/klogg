@@ -26,6 +26,7 @@
 #include <cassert>
 #include <cstdint>
 
+#include "crawlerwidget.h"
 #include "logdata.h"
 #include "logfiltereddata.h"
 #include "savedsearches.h"
@@ -176,7 +177,6 @@ void WindowSession::save(
         session_files.emplace_back( file->fileName, top_line, view_context->toString() );
     }
 
-    // TODO save timeline node
     auto& session = SessionInfo::getSynced();
     session.setOpenFiles( windowId_, session_files );
     session.setGeometry( windowId_, geometry );
@@ -199,6 +199,7 @@ WindowSession::restore( const std::function<ViewInterface*()>& view_factory,
             = appSession_->openAlways( file.fileName, view_factory, file.viewContext );
         result.emplace_back( file.fileName, view );
         openedFiles_.emplace_back( file.fileName );
+        static_cast<CrawlerWidget*>( view )->goToLine(file.topLine);
     }
 
     *current_file_index = static_cast<int>( result.size() - 1 );

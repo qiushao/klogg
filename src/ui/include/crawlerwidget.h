@@ -110,6 +110,9 @@ class CrawlerWidget : public QSplitter,
 
     void registerShortcuts();
 
+    void goToLine(uint64_t line);
+    uint64_t getCurrentLine() const;
+
   public Q_SLOTS:
     // Stop the asynchoronous loading of the file if one is in progress
     // The file is identified by the view attached to it.

@@ -308,6 +308,22 @@ void CrawlerWidget::goToLine()
     }
 }
 
+void CrawlerWidget::goToLine(uint64_t line)
+{
+    printf("goToLine %lu\n", line);
+    if(loadingInProgress_) {
+        currentLineNumber_ = LineNumber(line);
+        return ;
+    }
+    LineNumber lineNumber(line);
+    filteredView_->trySelectLine( logFilteredData_->getLineIndexNumber( lineNumber ) );
+    logMainView_->trySelectLine( lineNumber );
+}
+
+uint64_t CrawlerWidget::getCurrentLine() const {
+    return logMainView_->getTopLine().get();
+}
+
 //
 // Protected functions
 //
@@ -665,7 +681,7 @@ void CrawlerWidget::exitingQuickFind()
 
 void CrawlerWidget::loadingFinishedHandler( LoadingStatus status )
 {
-    LOG_INFO << "file loading finished, status " << static_cast<int>( status );
+    printf("file loading finished, status %d\n",static_cast<int>( status ));
 
     // We need to refresh the main window because the view lines on the
     // overview have probably changed.
@@ -708,6 +724,7 @@ void CrawlerWidget::loadingFinishedHandler( LoadingStatus status )
 
     loadingInProgress_ = false;
     Q_EMIT loadingFinished( status );
+    goToLine(currentLineNumber_.get());
 }
 
 void CrawlerWidget::fileChangedHandler( MonitoredFileStatus status )

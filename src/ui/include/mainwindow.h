@@ -166,6 +166,9 @@ class MainWindow : public QMainWindow {
     // and confirm it.
     void changeQFPattern( const QString& newPattern );
 
+    void saveSession();
+    void loadSession();
+
   Q_SIGNALS:
     // Is emitted when new settings must be used
     void optionsChanged();

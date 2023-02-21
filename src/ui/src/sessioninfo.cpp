@@ -105,4 +105,6 @@ void SessionInfo::saveToStorage( QSettings& settings ) const
     }
     settings.endArray();
     settings.endGroup(); // Win
+
+    settings.sync();
 }
