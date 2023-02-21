@@ -310,7 +310,6 @@ void CrawlerWidget::goToLine()
 
 void CrawlerWidget::goToLine(uint64_t line)
 {
-    printf("goToLine %lu\n", line);
     if(loadingInProgress_) {
         currentLineNumber_ = LineNumber(line);
         return ;
@@ -321,7 +320,7 @@ void CrawlerWidget::goToLine(uint64_t line)
 }
 
 uint64_t CrawlerWidget::getCurrentLine() const {
-    return logMainView_->getTopLine().get();
+    return logMainView_->getMiddleLine().get() + 1;
 }
 
 //

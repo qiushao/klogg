@@ -2047,9 +2047,8 @@ void MainWindow::saveSession() {
         return ;
     }
     printf("try save session to file : %s\n", fileName.toStdString().c_str());
-    auto sessionInfo = SessionInfo::get();
-    QSettings settings(fileName, QSettings::IniFormat);
-    sessionInfo.saveToStorage(settings);
+    QFile::remove(fileName);
+    QFile::copy(PersistentInfo::getSessionSettingsFilePath(), fileName);
 }
 
 void MainWindow::loadSession() {
@@ -2059,6 +2058,9 @@ void MainWindow::loadSession() {
         tr("Select session config file"),
         QDir::homePath(),
         tr("Session file(*.conf)"));
+    if (fileName.isEmpty()) {
+        return ;
+    }
     //printf("try to load session file %s\n", fileName.toStdString().c_str());
     //printf("sessionConfPath = %s\n", sessionConfPath.toStdString().c_str());
     QFile::remove(sessionConfPath);

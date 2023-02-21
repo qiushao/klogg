@@ -1479,6 +1479,11 @@ LineNumber AbstractLogView::getTopLine() const
     return firstLine_;
 }
 
+LineNumber AbstractLogView::getMiddleLine() const {
+    auto middleLine = firstLine_ + LinesCount( getNbVisibleLines().get() / 2 );
+    return middleLine;
+}
+
 QString AbstractLogView::getSelection() const
 {
     return selection_.getSelectedText( logData_ );
