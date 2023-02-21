@@ -2,11 +2,15 @@
 // Created by xuyou on 23-2-17.
 //
 
-#include "TimelineNode.h"
-TimelineNode::TimelineNode( uint64_t lineNumber, QString text, QString comment, QWidget* parent): QWidget(parent) {
-    lineNumber_ = lineNumber;
-    text_ = text;
-    comment_ = comment;
+#include "TimelineNodeWidget.h"
+TimelineNodeWidget::TimelineNodeWidget(TimeLineNodeInfo nodeInfo, QWidget* parent) {
+    TimelineNodeWidget(nodeInfo.lineNumber, nodeInfo.text, nodeInfo.comment, parent);
+}
+
+TimelineNodeWidget::TimelineNodeWidget( uint64_t lineNumber, QString text, QString comment, QWidget* parent): QWidget(parent) {
+    nodeInfo_.lineNumber = lineNumber;
+    nodeInfo_.text = text;
+    nodeInfo_.comment = comment;
 
     lineNumberLabel_ = new QLabel(QString::number(lineNumber + 1), this);
     lineNumberLabel_->setMaximumWidth(65);
@@ -23,7 +27,7 @@ TimelineNode::TimelineNode( uint64_t lineNumber, QString text, QString comment, 
     setLayout(mainLayout_);
 }
 
-uint64_t TimelineNode::getLineNumber()
+uint64_t TimelineNodeWidget::getLineNumber()
 {
-    return lineNumber_;
+    return nodeInfo_.lineNumber;
 }

@@ -3,7 +3,7 @@
 //
 
 #include "TimelineWidget.h"
-#include "TimelineNode.h"
+#include "TimelineNodeWidget.h"
 #include <QMessageBox>
 TimelineWidget::TimelineWidget( AbstractLogView* mainLogView, AbstractLogView* filteredLogView, QWidget* parent )
     : QListWidget( parent )
@@ -26,13 +26,13 @@ void TimelineWidget::addLinesToTimeline( const std::vector<LineNumber>& lines ) 
 void TimelineWidget::addToTimeline( uint64_t lineNumber, QString detail, QString comment ) {
     const int listSize = this->count();
     // printf("TimelineWidget::addToTimeline %ld, list size = %d\n", lineNumber, listSize);
-    auto timelineNode = new TimelineNode(lineNumber, detail, comment, this);
+    auto timelineNode = new TimelineNodeWidget(lineNumber, detail, comment, this);
     auto listItem = new QListWidgetItem();
     listItem->setSizeHint(QSize(200,120));
 
     int pos = listSize;
     for (int row = 0; row < listSize; ++row ) {
-        TimelineNode* tmpNode = dynamic_cast<TimelineNode*>( itemWidget( this->item( row ) ) );
+        TimelineNodeWidget* tmpNode = dynamic_cast<TimelineNodeWidget*>( itemWidget( this->item( row ) ) );
         // printf("process %ld < %ld ?\n", lineNumber, tmpNode->getLineNumber());
         if(lineNumber < tmpNode->getLineNumber()) {
             pos = row;
@@ -48,7 +48,7 @@ void TimelineWidget::addToTimeline( uint64_t lineNumber, QString detail, QString
 }
 
 void TimelineWidget::onItemDoubleClicked( QListWidgetItem* item ) {
-    TimelineNode* node = dynamic_cast<TimelineNode*>( itemWidget( item ) );
+    TimelineNodeWidget* node = dynamic_cast<TimelineNodeWidget*>( itemWidget( item ) );
     LineNumber line(node->getLineNumber());
     auto filterLine = filteredLogView_->lineIndex(line);
     filteredLogView_->trySelectLine(filterLine);
