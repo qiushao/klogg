@@ -10,12 +10,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLabel>
-
-struct TimeLineNodeInfo {
-    uint64_t lineNumber;
-    QString text;
-    QString comment;
-};
+#include "TimelineNodeInfo.h"
 
 class TimelineNodeWidget : public QWidget {
     Q_OBJECT

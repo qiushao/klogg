@@ -46,7 +46,8 @@ add_library(
   ${CMAKE_CURRENT_SOURCE_DIR}/include/fontutils.h
   ${CMAKE_CURRENT_SOURCE_DIR}/include/colorlabelsmanager.h
   ${CMAKE_CURRENT_SOURCE_DIR}/include/TimelineWidget.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/TimelineNodeWidget.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/TimelineNodeWidget.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/TimelineNodeInfo.h
   ${CMAKE_CURRENT_SOURCE_DIR}/include/highlighteredit.ui
   ${CMAKE_CURRENT_SOURCE_DIR}/include/highlightersetedit.ui
   ${CMAKE_CURRENT_SOURCE_DIR}/include/highlightersdialog.ui
@@ -92,7 +93,7 @@ add_library(
   ${CMAKE_CURRENT_SOURCE_DIR}/src/decompressor.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/colorlabelsmanager.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/TimelineWidget.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/TimelineNodeWidget.cpp)
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/TimelineNodeWidget.cpp )
 
 set_target_properties(klogg_ui PROPERTIES AUTOUIC ON)
 set_target_properties(klogg_ui PROPERTIES AUTOMOC ON)

@@ -3,6 +3,8 @@
 //
 
 #include "TimelineNodeWidget.h"
+#include "TimelineNodeInfo.h"
+
 TimelineNodeWidget::TimelineNodeWidget(TimeLineNodeInfo nodeInfo, QWidget* parent) {
     TimelineNodeWidget(nodeInfo.lineNumber, nodeInfo.text, nodeInfo.comment, parent);
 }
