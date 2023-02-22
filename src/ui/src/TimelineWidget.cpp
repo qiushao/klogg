@@ -58,6 +58,13 @@ std::vector<TimelineNodeInfo> TimelineWidget::getTimelineNodes()
     return nodes;
 }
 
+void TimelineWidget::restoreTimeline(const std::vector<TimelineNodeInfo>& nodes) {
+    printf("TimelineWidget::restoreTimeline nodes size = %lu\n", nodes.size());
+    for (auto node : nodes) {
+        addToTimeline(node.lineNumber, node.text, node.comment);
+    }
+}
+
 void TimelineWidget::onItemDoubleClicked( QListWidgetItem* item ) {
     TimelineNodeWidget* node = dynamic_cast<TimelineNodeWidget*>( itemWidget( item ) );
     LineNumber line(node->getLineNumber());

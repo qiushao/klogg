@@ -32,6 +32,7 @@
 
 #include "log.h"
 #include "quickfindpattern.h"
+#include "sessioninfo.h"
 
 class ViewInterface;
 class ViewContextInterface;
@@ -138,7 +139,7 @@ class Session : public std::enable_shared_from_this<Session> {
     friend class WindowSession;
 };
 
-using OpenedFilesList = std::vector<std::pair<QString, ViewInterface*>>;
+using OpenedFilesList = std::vector<std::pair<SessionInfo::OpenFile, ViewInterface*>>;
 using SaveFileInfo
     = std::tuple<const ViewInterface*, uint64_t, std::shared_ptr<const ViewContextInterface>>;
 

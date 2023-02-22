@@ -613,6 +613,11 @@ std::vector<TimelineNodeInfo> CrawlerWidget::getTimelineNodes()
     return timelineWidget_->getTimelineNodes();
 }
 
+
+void CrawlerWidget::restoreTimeline(const std::vector<TimelineNodeInfo>& nodes) {
+    timelineWidget_->restoreTimeline(nodes);
+}
+
 void CrawlerWidget::applyConfiguration()
 {
     const auto& config = Configuration::get();

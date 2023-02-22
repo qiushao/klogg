@@ -249,10 +249,11 @@ void MainWindow::reloadSession()
         = session_.restore( [] { return new CrawlerWidget(); }, &current_file_index );
 
     for ( const auto& open_file : openedFiles ) {
-        QString file_name = { open_file.first };
+        QString file_name = open_file.first.fileName;
         auto* crawler_widget = static_cast<CrawlerWidget*>( open_file.second );
 
         if ( crawler_widget ) {
+            crawler_widget->restoreTimeline(open_file.first.timelineNodes);
             mainTabWidget_.addCrawler( crawler_widget, file_name );
 
             if ( followFileOnLoad ) {

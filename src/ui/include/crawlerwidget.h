@@ -113,8 +113,9 @@ class CrawlerWidget : public QSplitter,
     void goToLine(uint64_t line);
     uint64_t getCurrentLine() const;
     std::vector<TimelineNodeInfo> getTimelineNodes();
+    void restoreTimeline(const std::vector<TimelineNodeInfo>& nodes) ;
 
-  public Q_SLOTS:
+        public Q_SLOTS:
     // Stop the asynchoronous loading of the file if one is in progress
     // The file is identified by the view attached to it.
     void stopLoading();

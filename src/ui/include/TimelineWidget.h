@@ -19,6 +19,7 @@ class TimelineWidget : public QListWidget {
     void addLinesToTimeline( const std::vector<LineNumber>& lines );
     void addToTimeline(uint64_t lineNumber, QString line, QString comment);
     std::vector<TimelineNodeInfo> getTimelineNodes();
+    void restoreTimeline(const std::vector<TimelineNodeInfo>& nodes);
 
   private:
     void initPopMenu();

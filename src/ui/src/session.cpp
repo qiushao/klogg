@@ -184,7 +184,7 @@ void WindowSession::save(
     session.save();
 }
 
-std::vector<std::pair<QString, ViewInterface*>>
+std::vector<std::pair<SessionInfo::OpenFile, ViewInterface*>>
 WindowSession::restore( const std::function<ViewInterface*()>& view_factory,
                         int* current_file_index )
 {
@@ -192,13 +192,13 @@ WindowSession::restore( const std::function<ViewInterface*()>& view_factory,
 
     std::vector<SessionInfo::OpenFile> session_files = session.openFiles( windowId_ );
     LOG_DEBUG << "Session returned " << session_files.size();
-    std::vector<std::pair<QString, ViewInterface*>> result;
+    std::vector<std::pair<SessionInfo::OpenFile, ViewInterface*>> result;
 
     for ( auto file : session_files ) {
         LOG_DEBUG << "Create view for " << file.fileName;
         ViewInterface* view
             = appSession_->openAlways( file.fileName, view_factory, file.viewContext );
-        result.emplace_back( file.fileName, view );
+        result.emplace_back( file, view );
         openedFiles_.emplace_back( file.fileName );
         static_cast<CrawlerWidget*>( view )->goToLine(file.topLine);
     }
