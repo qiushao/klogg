@@ -608,6 +608,11 @@ void CrawlerWidget::addToTimelineFromFiltered( const std::vector<LineNumber>& li
     addToTimelineFromMain( linesInMain );
 }
 
+std::vector<TimelineNodeInfo> CrawlerWidget::getTimelineNodes()
+{
+    return timelineWidget_->getTimelineNodes();
+}
+
 void CrawlerWidget::applyConfiguration()
 {
     const auto& config = Configuration::get();

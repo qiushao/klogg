@@ -15,13 +15,14 @@
 class TimelineNodeWidget : public QWidget {
     Q_OBJECT
   public:
-    TimelineNodeWidget(TimeLineNodeInfo nodeInfo, QWidget* parent = nullptr);
+    TimelineNodeWidget( TimelineNodeInfo nodeInfo, QWidget* parent = nullptr);
     TimelineNodeWidget(uint64_t lineNumber, QString text, QString comment, QWidget* parent = nullptr);
 
     uint64_t getLineNumber();
+    const TimelineNodeInfo& getTimelineNodeInfo();
 
   private:
-    TimeLineNodeInfo nodeInfo_;
+    TimelineNodeInfo nodeInfo_;
 
     QLabel *lineNumberLabel_;
     QLabel *textLabel_;

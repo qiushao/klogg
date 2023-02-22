@@ -5,7 +5,7 @@
 #include "TimelineNodeWidget.h"
 #include "TimelineNodeInfo.h"
 
-TimelineNodeWidget::TimelineNodeWidget(TimeLineNodeInfo nodeInfo, QWidget* parent) {
+TimelineNodeWidget::TimelineNodeWidget( TimelineNodeInfo nodeInfo, QWidget* parent) {
     TimelineNodeWidget(nodeInfo.lineNumber, nodeInfo.text, nodeInfo.comment, parent);
 }
 
@@ -32,4 +32,10 @@ TimelineNodeWidget::TimelineNodeWidget( uint64_t lineNumber, QString text, QStri
 uint64_t TimelineNodeWidget::getLineNumber()
 {
     return nodeInfo_.lineNumber;
+}
+
+const TimelineNodeInfo& TimelineNodeWidget::getTimelineNodeInfo()
+{
+    nodeInfo_.comment = commentEdit_->text();
+    return nodeInfo_;
 }

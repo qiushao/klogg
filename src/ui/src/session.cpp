@@ -174,7 +174,8 @@ void WindowSession::save(
         assert( file );
 
         LOG_DEBUG << "Saving " << file->fileName.toLocal8Bit().data() << " in session.";
-        session_files.emplace_back( file->fileName, top_line, view_context->toString() );
+        auto timelineNodes = ((CrawlerWidget *)view_object)->getTimelineNodes();
+        session_files.emplace_back( file->fileName, top_line, view_context->toString(), timelineNodes);
     }
 
     auto& session = SessionInfo::getSynced();

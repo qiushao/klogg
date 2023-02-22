@@ -51,7 +51,21 @@ void SessionInfo::retrieveFromStorage( QSettings& settings )
                         QString file_name = settings.value( "fileName" ).toString();
                         uint64_t top_line = settings.value( "topLine" ).toULongLong();
                         QString view_context = settings.value( "viewContext" ).toString();
-                        window.openFiles.emplace_back( file_name, top_line, view_context );
+
+                        std::vector<TimelineNodeInfo> timelineNodes;
+                        settings.beginGroup( "TimelineNodes" );
+                        int timelineNodeSize = settings.beginReadArray("timelineNodes");
+                        for ( int j = 0; j < timelineNodeSize; ++j ) {
+                            settings.setArrayIndex(j);
+                            uint64_t lineNumber = settings.value("lineNumber").toULongLong();
+                            QString text = settings.value("text").toString();
+                            QString comment = settings.value("comment").toString();
+                            timelineNodes.emplace_back(lineNumber, text, comment);
+                        }
+                        settings.endArray();
+                        settings.endGroup();
+
+                        window.openFiles.emplace_back( file_name, top_line, view_context, timelineNodes );
                     }
                     settings.endArray();
                 }
@@ -99,6 +113,20 @@ void SessionInfo::saveToStorage( QSettings& settings ) const
             settings.setValue( "fileName", open_file->fileName );
             settings.setValue( "topLine", qint64( open_file->topLine ) );
             settings.setValue( "viewContext", open_file->viewContext );
+
+            settings.beginGroup( "TimelineNodes" );
+            settings.setValue( "version", SESSION_VERSION );
+            settings.remove( "timelineNodes" );
+            settings.beginWriteArray( "timelineNodes" );
+            for ( unsigned j = 0; j < open_file->timelineNodes.size(); ++j ) {
+                settings.setArrayIndex( static_cast<int>( j ) );
+                const TimelineNodeInfo node = open_file->timelineNodes[j];
+                settings.setValue("lineNumber", qint64(node.lineNumber));
+                settings.setValue("text", node.text);
+                settings.setValue("comment", node.comment);
+            }
+            settings.endArray();
+            settings.endGroup(); // TimelineNodes
         }
         settings.endArray();
         settings.endGroup(); // OpenFiles

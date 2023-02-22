@@ -5,9 +5,12 @@
 #ifndef KLOGG_TIMELINENODEINFO_H
 #define KLOGG_TIMELINENODEINFO_H
 
-struct TimeLineNodeInfo {
-    TimeLineNodeInfo() {}
-    TimeLineNodeInfo(uint64_t line, QString str, QString cm)
+#include <stdint.h>
+#include <QString>
+
+struct TimelineNodeInfo {
+    TimelineNodeInfo() {}
+    TimelineNodeInfo(uint64_t line, QString str, QString cm)
     : lineNumber(line)
     , text(str)
     , comment(cm) {

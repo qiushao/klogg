@@ -5,11 +5,12 @@
 #ifndef KLOGG_TIMELINEWIDGET_H
 #define KLOGG_TIMELINEWIDGET_H
 
+#include "TimelineNodeInfo.h"
 #include "abstractlogview.h"
 #include "linetypes.h"
+#include <QAction>
 #include <QListWidget>
 #include <QMenu>
-#include <QAction>
 
 class TimelineWidget : public QListWidget {
     Q_OBJECT
@@ -17,6 +18,7 @@ class TimelineWidget : public QListWidget {
     TimelineWidget(AbstractLogView* mainLogView, AbstractLogView* filteredLogView, QWidget* parent = nullptr);
     void addLinesToTimeline( const std::vector<LineNumber>& lines );
     void addToTimeline(uint64_t lineNumber, QString line, QString comment);
+    std::vector<TimelineNodeInfo> getTimelineNodes();
 
   private:
     void initPopMenu();

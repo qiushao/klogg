@@ -46,6 +46,7 @@
 #include <QString>
 
 #include "persistable.h"
+#include "TimelineNodeInfo.h"
 
 // Simple component class containing information related to the session
 // to be persisted and reloaded upon start
@@ -57,15 +58,17 @@ class SessionInfo : public Persistable<SessionInfo, session_settings> {
     }
 
     struct OpenFile {
-        OpenFile( const QString& file, uint64_t top, const QString& context )
+        OpenFile( const QString& file, uint64_t top, const QString& context, const std::vector<TimelineNodeInfo>& nodes)
             : fileName{ file }
             , topLine{ top }
             , viewContext{ context }
         {
+            timelineNodes = nodes;
         }
 
         QString fileName;
         uint64_t topLine;
+        std::vector<TimelineNodeInfo> timelineNodes;
 
         // The view context contains parameter specific to the view's
         // implementation (such as geometry...)

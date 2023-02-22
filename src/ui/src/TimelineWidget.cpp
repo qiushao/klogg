@@ -47,6 +47,17 @@ void TimelineWidget::addToTimeline( uint64_t lineNumber, QString detail, QString
     setItemWidget( listItem, timelineNode );
 }
 
+std::vector<TimelineNodeInfo> TimelineWidget::getTimelineNodes()
+{
+    std::vector<TimelineNodeInfo> nodes;
+    int listSize = this->count();
+    for (int row = 0; row < listSize; ++row ) {
+        TimelineNodeWidget* tmpNode = dynamic_cast<TimelineNodeWidget*>( itemWidget( this->item( row ) ) );
+        nodes.push_back(tmpNode->getTimelineNodeInfo());
+    }
+    return nodes;
+}
+
 void TimelineWidget::onItemDoubleClicked( QListWidgetItem* item ) {
     TimelineNodeWidget* node = dynamic_cast<TimelineNodeWidget*>( itemWidget( item ) );
     LineNumber line(node->getLineNumber());
