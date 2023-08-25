@@ -71,9 +71,10 @@ Configure and build klogg:
 
 ```
 cd <path_to_klogg_repository_clone>
+tar xvf cpm_cache.tar.gz
 mkdir build_root
 cd build_root
-cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+cmake -DCPM_SOURCE_CACHE=../cpm_cache ..
 cmake --build .
 ```
 
