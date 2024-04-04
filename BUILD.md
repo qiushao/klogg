@@ -60,7 +60,13 @@ Memory allocator override can be turned off by passing `-DKLOGG_OVERRIDE_MALLOC`
 
 ### Building on Linux
 
-Here is how to build klogg on Ubuntu 18.04.
+You can use the provided script for an automated build by running:
+
+```Bash
+./scripts/build.sh
+```
+
+Alternatively, you can follow the manual build instructions provided below. Please make sure you have all the necessary dependencies installed on your system.
 
 Install dependencies:
 ```
