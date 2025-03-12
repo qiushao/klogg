@@ -84,6 +84,11 @@ cmake -DCPM_SOURCE_CACHE=../cpm_cache ..
 cmake --build .
 ```
 
+**if build system is ubuntu 18.04, you should configure as:**
+```
+cmake -DCPM_SOURCE_CACHE=../cpm_cache -DKLOGG_GENERIC_CPU=ON -DKLOGG_USE_LTO=OFF ..
+```
+
 Binaries are placed into `build_root/output`.
 
 See `.github/workflows/ci-build.yml` for more information on build process.

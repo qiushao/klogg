@@ -4,28 +4,35 @@ SCRIPTS_DIR=$(cd $(dirname $0); pwd)
 TOP_DIR=${SCRIPTS_DIR}/..
 BUILD_DIR=${TOP_DIR}/build_root
 
-read -s -p "Enter sudo Password: " sudo_passwd
-echo # Move to a new line
 
-install_dependencies() {
-  echo $sudo_passwd| sudo -S apt -y install build-essential cmake qtbase5-dev libboost-all-dev ragel
+function install_dependencies() {
+  sudo -S apt -y install build-essential cmake qtbase5-dev libboost-all-dev ragel
 }
 
-build_klogg() {
-  mkdir -p BUILD_DIR
+
+function build_klogg() {
+  mkdir -p ${BUILD_DIR}
   pushd ${BUILD_DIR}
-  cmake -DCPM_SOURCE_CACHE=../cpm_cache ..
-  cmake --build . -j
+  local version_id=$(cat /etc/os-release | grep VERSION_ID | awk -F= '{print $2}')
+  echo "build on ${version_id}"
+  if [ $version_id == "18.04" ];then
+    echo "ubuntu 18.04, disable LTO"
+    cmake -DCPM_SOURCE_CACHE=../cpm_cache -DKLOGG_GENERIC_CPU=ON -DKLOGG_USE_LTO=OFF ..
+  else
+    cmake -DCPM_SOURCE_CACHE=../cpm_cache ..
+  fi
+  
+  cmake --build . -j 8
   popd
 }
 
-extract_from_tar() {
+function extract_from_tar() {
   pushd ${TOP_DIR}
   tar xvf cpm_cache.tar.gz
   popd
 }
 
-build_deb_package() {
+function build_deb_package() {
   echo "build deb now"
   pushd ${BUILD_DIR}
   cpack
